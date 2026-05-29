@@ -6,11 +6,7 @@ import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { sidebarLinks } from "./sidebar-links";
 
@@ -18,16 +14,12 @@ export function MobileSidebar() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="md:hidden"
-        >
+        <Button variant="outline" size="icon" className="md:hidden">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
 
-      <SheetContent side="left">
+      <SheetContent side="left" className="w-72">
         <div className="mt-8 space-y-4">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;

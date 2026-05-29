@@ -57,7 +57,7 @@ export function TaskCard({ task }: Props) {
   }
 
   return (
-    <div className="space-y-4 rounded-2xl border p-5">
+    <div className="space-y-4 rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
       <div>
         <h3 className="text-xl font-semibold">
           {task.title}

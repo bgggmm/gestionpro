@@ -58,6 +58,26 @@ export async function proxy(
     );
   }
 
+  // ADMIN PROTECTION
+  if (
+    pathname.startsWith(
+      "/dashboard/admin"
+    )
+  ) {
+    const { data: profile } =
+      await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user?.id)
+        .single();
+
+    if (profile?.role !== "admin") {
+      return NextResponse.redirect(
+        new URL("/dashboard", request.url)
+      );
+    }
+  }
+
   return response;
 }
 
