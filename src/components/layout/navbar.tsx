@@ -1,6 +1,10 @@
+import Link from "next/link";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -11,11 +15,11 @@ import {
 
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 
-import { LogoutButton } from "@/components/shared/logout-button";
-
 import { MobileSidebar } from "./mobile-sidebar";
 
 import { createClient } from "@/lib/supabase/server";
+
+import { LogoutButton } from "@/components/shared/logout-button";
 
 export async function Navbar() {
   const supabase = await createClient();
@@ -44,17 +48,20 @@ export async function Navbar() {
         <ThemeToggle />
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Avatar>
+          <DropdownMenuTrigger className="outline-none">
+            <Avatar className="cursor-pointer">
               <AvatarFallback>
                 {profile?.name?.charAt(0) || "G"}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end">
-            <div className="p-3">
-              <p className="font-medium">
+          <DropdownMenuContent
+            align="end"
+            className="w-64"
+          >
+            <div className="p-4">
+              <p className="font-semibold">
                 {profile?.name}
               </p>
 
@@ -62,6 +69,16 @@ export async function Navbar() {
                 {profile?.email}
               </p>
             </div>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/profile">
+                Perfil
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
 
             <div className="p-2">
               <LogoutButton />
