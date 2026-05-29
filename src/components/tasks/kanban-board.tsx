@@ -6,8 +6,12 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  type DropResult,
+  DropResult,
 } from "@hello-pangea/dnd";
+import { createClient } from "@/lib/supabase/client";
+
+import { toast } from "sonner";
+
 interface Task {
   id: string;
 
@@ -25,6 +29,8 @@ interface Props {
 export function KanbanBoard({
   tasks,
 }: Props) {
+  const supabase = createClient();
+
   const [columns, setColumns] =
     useState({
       pending: tasks.filter(
@@ -38,7 +44,9 @@ export function KanbanBoard({
       ),
     });
 
-  function onDragEnd(result: DropResult) {
+  async function onDragEnd(
+    result: DropResult
+  ) {
     if (!result.destination) return;
 
     const sourceColumn =
@@ -78,6 +86,7 @@ export function KanbanBoard({
       removed
     );
 
+    // UPDATE UI
     setColumns({
       ...columns,
 
@@ -87,6 +96,27 @@ export function KanbanBoard({
       [result.destination
         .droppableId]: destItems,
     });
+
+    // UPDATE DATABASE
+    const { error } =
+      await supabase
+        .from("tasks")
+        .update({
+          status: removed.status,
+        })
+        .eq("id", removed.id);
+
+    if (error) {
+      toast.error(
+        "Error actualizando tarea"
+      );
+
+      return;
+    }
+
+    toast.success(
+      "Estado actualizado 🚀"
+    );
   }
 
   return (
@@ -111,7 +141,7 @@ export function KanbanBoard({
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="space-y-4"
+                    className="space-y-4 min-h-50"
                   >
                     {items.map(
                       (task, index) => (
