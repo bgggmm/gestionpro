@@ -8,7 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+} from "@/components/ui/avatar";
 
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 
@@ -32,38 +35,50 @@ export async function Navbar() {
     .single();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b px-6">
+    <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background px-6">
       <div className="flex items-center gap-4">
         <MobileSidebar />
 
-        <h2 className="text-lg font-semibold">Dashboard</h2>
+        <h2 className="text-lg font-semibold">
+          Dashboard
+        </h2>
       </div>
 
       <div className="flex items-center gap-4">
         <ThemeToggle />
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="outline-none">
-            <Avatar className="cursor-pointer">
-              <AvatarFallback>{profile?.name?.charAt(0) || "G"}</AvatarFallback>
-            </Avatar>
+          <DropdownMenuTrigger asChild>
+            <button className="outline-none">
+              <Avatar className="cursor-pointer">
+                <AvatarFallback>
+                  {profile?.name?.charAt(0) || "G"}
+                </AvatarFallback>
+              </Avatar>
+            </button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="end"
-            sideOffset={10}
-            className="z-50 w-64 rounded-2xl"
+            sideOffset={8}
+            className="z-100 w-64 rounded-2xl"
           >
             <div className="p-4">
-              <p className="font-semibold">{profile?.name}</p>
+              <p className="font-semibold">
+                {profile?.name}
+              </p>
 
-              <p className="text-sm text-muted-foreground">{profile?.email}</p>
+              <p className="text-sm text-muted-foreground">
+                {profile?.email}
+              </p>
             </div>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/profile">Perfil</Link>
+              <Link href="/dashboard/profile">
+                Perfil
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
