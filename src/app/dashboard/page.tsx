@@ -1,11 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
+import { ActivityFeed } from "@/components/dashboard/activity-feed";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { FadeIn } from "@/components/shared/fade-in";
 
@@ -14,95 +10,74 @@ import { TasksChart } from "@/components/dashboard/tasks-chart";
 export default async function DashboardPage() {
   const supabase = await createClient();
 
-  const { data: tasks } = await supabase
-    .from("tasks")
-    .select("*");
+  const { data: tasks } = await supabase.from("tasks").select("*");
 
   const totalTasks = tasks?.length || 0;
 
   const completedTasks =
-    tasks?.filter(
-      (task) =>
-        task.status === "completed"
-    ).length || 0;
+    tasks?.filter((task) => task.status === "completed").length || 0;
 
   const pendingTasks =
-    tasks?.filter(
-      (task) =>
-        task.status === "pending"
-    ).length || 0;
+    tasks?.filter((task) => task.status === "pending").length || 0;
 
   return (
     <FadeIn>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-          <p className="text-muted-foreground">
-            Resumen general del sistema
-          </p>
+          <p className="text-muted-foreground">Resumen general del sistema</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="transition-all hover:-translate-y-1 hover:shadow-xl">
             <CardHeader>
-              <CardTitle>
-                Tareas Totales
-              </CardTitle>
+              <CardTitle>Tareas Totales</CardTitle>
             </CardHeader>
 
             <CardContent>
-              <p className="text-4xl font-bold">
-                {totalTasks}
-              </p>
+              <p className="text-4xl font-bold">{totalTasks}</p>
             </CardContent>
           </Card>
 
           <Card className="transition-all hover:-translate-y-1 hover:shadow-xl">
             <CardHeader>
-              <CardTitle>
-                Completadas
-              </CardTitle>
+              <CardTitle>Completadas</CardTitle>
             </CardHeader>
 
             <CardContent>
-              <p className="text-4xl font-bold">
-                {completedTasks}
-              </p>
+              <p className="text-4xl font-bold">{completedTasks}</p>
             </CardContent>
           </Card>
 
           <Card className="transition-all hover:-translate-y-1 hover:shadow-xl">
             <CardHeader>
-              <CardTitle>
-                Pendientes
-              </CardTitle>
+              <CardTitle>Pendientes</CardTitle>
             </CardHeader>
 
             <CardContent>
-              <p className="text-4xl font-bold">
-                {pendingTasks}
-              </p>
+              <p className="text-4xl font-bold">{pendingTasks}</p>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>
-              Estadísticas
-            </CardTitle>
+            <CardTitle>Estadísticas</CardTitle>
           </CardHeader>
 
           <CardContent>
-            <TasksChart
-              pending={pendingTasks}
-              completed={
-                completedTasks
-              }
-            />
+            <TasksChart pending={pendingTasks} completed={completedTasks} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Actividad reciente</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <ActivityFeed />
           </CardContent>
         </Card>
       </div>
