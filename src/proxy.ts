@@ -1,52 +1,38 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
-import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const response = await updateSession(request);
+import type { NextRequest } from "next/server";
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
+export function proxy(request: NextRequest) {
+  const token = request.cookies.get(
+    "sb-access-token"
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const isAuthPage =
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/register");
+    request.nextUrl.pathname.startsWith(
+      "/login"
+    ) ||
+    request.nextUrl.pathname.startsWith(
+      "/register"
+    );
 
   const isDashboard =
-    request.nextUrl.pathname.startsWith("/dashboard");
+    request.nextUrl.pathname.startsWith(
+      "/dashboard"
+    );
 
-  if (!user && isDashboard) {
+  if (!token && isDashboard) {
     return NextResponse.redirect(
       new URL("/login", request.url)
     );
   }
 
-  if (user && isAuthPage) {
+  if (token && isAuthPage) {
     return NextResponse.redirect(
       new URL("/dashboard", request.url)
     );
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
