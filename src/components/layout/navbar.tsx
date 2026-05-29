@@ -8,10 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 
@@ -39,9 +36,7 @@ export async function Navbar() {
       <div className="flex items-center gap-4">
         <MobileSidebar />
 
-        <h2 className="text-lg font-semibold">
-          Dashboard
-        </h2>
+        <h2 className="text-lg font-semibold">Dashboard</h2>
       </div>
 
       <div className="flex items-center gap-4">
@@ -50,32 +45,25 @@ export async function Navbar() {
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="cursor-pointer">
-              <AvatarFallback>
-                {profile?.name?.charAt(0) || "G"}
-              </AvatarFallback>
+              <AvatarFallback>{profile?.name?.charAt(0) || "G"}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="end"
-            className="w-64"
+            sideOffset={10}
+            className="z-50 w-64 rounded-2xl"
           >
             <div className="p-4">
-              <p className="font-semibold">
-                {profile?.name}
-              </p>
+              <p className="font-semibold">{profile?.name}</p>
 
-              <p className="text-sm text-muted-foreground">
-                {profile?.email}
-              </p>
+              <p className="text-sm text-muted-foreground">{profile?.email}</p>
             </div>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/profile">
-                Perfil
-              </Link>
+              <Link href="/dashboard/profile">Perfil</Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
