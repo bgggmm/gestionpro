@@ -17,6 +17,10 @@ const routes = [
     href: "/dashboard/profile",
     label: "Perfil",
   },
+  {
+    href: "/dashboard/kanban",
+    label: "Kanban",
+  },
 ];
 
 export async function Sidebar() {
@@ -26,19 +30,16 @@ export async function Sidebar() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: profile } =
-    await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user?.id)
-      .single();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user?.id)
+    .single();
 
   return (
     <aside className="hidden w-72 border-r bg-background lg:block">
       <div className="p-6">
-        <h1 className="text-2xl font-bold">
-          GestiónPro
-        </h1>
+        <h1 className="text-2xl font-bold">GestiónPro</h1>
       </div>
 
       <nav className="space-y-2 px-4">

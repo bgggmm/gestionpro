@@ -9,6 +9,8 @@ import {
 
 import { FadeIn } from "@/components/shared/fade-in";
 
+import { TasksChart } from "@/components/dashboard/tasks-chart";
+
 export default async function DashboardPage() {
   const supabase = await createClient();
 
@@ -86,6 +88,23 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              Estadísticas
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <TasksChart
+              pending={pendingTasks}
+              completed={
+                completedTasks
+              }
+            />
+          </CardContent>
+        </Card>
       </div>
     </FadeIn>
   );
